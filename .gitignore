@@ -1,0 +1,11 @@
+mlruns/
+data/raw/NAB/
+data/processed/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+.ipynb_checkpoints/
+dist/
+build/
+*.db

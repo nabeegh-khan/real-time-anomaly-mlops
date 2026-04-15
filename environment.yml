@@ -1,0 +1,26 @@
+name: mlops_pipeline
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch::pytorch
+  - pytorch::cpuonly
+  - conda-forge::pyspark=3.5
+  - conda-forge::pandas
+  - conda-forge::numpy
+  - conda-forge::matplotlib
+  - conda-forge::seaborn
+  - conda-forge::scikit-learn
+  - conda-forge::jupyter
+  - conda-forge::ipykernel
+  - conda-forge::mlflow
+  - conda-forge::duckdb
+  - pip:
+    - confluent-kafka
+    - dbt-duckdb
+    - fastapi
+    - uvicorn[standard]
+    - evidently
+    - httpx
