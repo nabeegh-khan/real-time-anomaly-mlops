@@ -93,6 +93,33 @@ time-series anomaly detection.
 
 ---
 
+## Orchestration
+
+Two Airflow DAGs automate the full ML lifecycle:
+
+**`lstm_retraining_pipeline`** — runs every Sunday at midnight
+1. Validates the feature store has data
+2. Retrains the LSTM autoencoder on the latest features
+3. Runs a drift check after retraining
+4. Logs completion with model artifact paths
+
+**`drift_monitoring_pipeline`** — runs every day at 6am
+1. Validates input data is available
+2. Generates an Evidently AI drift report (train vs current distributions)
+3. Checks if drift exceeds the 50% feature threshold
+4. Logs the monitoring result — in production this triggers a Slack/PagerDuty alert and kicks off the retraining DAG
+
+To start Airflow locally:
+
+```bash
+cd infrastructure/airflow
+docker-compose up -d
+```
+
+Then open http://localhost:8080 (user: admin / password: admin) to see both DAGs.
+
+---
+
 ## Repo Structure
 
 ```
