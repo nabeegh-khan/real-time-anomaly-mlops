@@ -6,6 +6,35 @@ FastAPI model serving → Airflow orchestration → Evidently AI drift monitorin
 
 ---
 
+## Demo
+
+### Kafka → Spark Structured Streaming (live batches)
+![Spark Streaming Output](docs/screenshots/spark_streaming_output.png)
+
+### FastAPI /predict endpoint (Swagger UI)
+![FastAPI Swagger](docs/screenshots/fastapi_swagger.png)
+
+### Live prediction response
+![FastAPI Prediction](docs/screenshots/fastapi_predict_response.png)
+
+### MLflow experiment tracking (2 runs)
+![MLflow Training Runs](docs/screenshots/mlflow_training_runs.png)
+
+### LSTM loss curves (20 epochs)
+![MLflow Loss Curve](docs/screenshots/mlflow_loss_curve.png)
+
+### Evidently AI drift monitoring
+![Evidently Drift Summary](docs/screenshots/evidently_drift_summary.png)
+![Evidently Drift Table](docs/screenshots/evidently_drift_table.png)
+
+### NAB time series with anomaly windows
+![NAB Representative Series](docs/screenshots/nab_representative_series.png)
+
+### Reconstruction error distributions (normal vs anomaly)
+![Reconstruction Error](docs/screenshots/reconstruction_error_distributions.png)
+
+---
+
 ## Architecture
 
 ```
@@ -29,6 +58,8 @@ DuckDB + dbt — feature store · batch transforms · schema tests
                  Evidently AI
                  Drift monitoring · alerts
 ```
+
+---
 
 ## Dataset
 
@@ -124,19 +155,21 @@ Then open http://localhost:8080 (user: admin / password: admin) to see both DAGs
 
 ```
 ├── data/
-│   ├── raw/NAB/                  # Numenta Anomaly Benchmark (clone separately)
-│   └── processed/                # feature store, model artifacts, reports
+│   ├── raw/NAB/                   # Numenta Anomaly Benchmark (clone separately)
+│   └── processed/                 # feature store, model artifacts, reports
+├── docs/
+│   └── screenshots/               # README demo screenshots
 ├── infrastructure/
-│   ├── kafka/docker-compose.yml  # Kafka + Zookeeper
+│   ├── kafka/docker-compose.yml   # Kafka + Zookeeper
 │   └── airflow/docker-compose.yml
 ├── src/
-│   ├── ingestion/                # Kafka NAB replay producer
-│   ├── streaming/                # Spark Structured Streaming job
-│   ├── transforms/               # dbt project (DuckDB)
-│   ├── training/                 # LSTM Autoencoder + MLflow
-│   ├── serving/                  # FastAPI + Dockerfile
-│   ├── monitoring/               # Evidently drift reports
-│   └── orchestration/dags/       # Airflow DAGs
+│   ├── ingestion/                 # Kafka NAB replay producer
+│   ├── streaming/                 # Spark Structured Streaming job
+│   ├── transforms/                # dbt project (DuckDB)
+│   ├── training/                  # LSTM Autoencoder + MLflow
+│   ├── serving/                   # FastAPI + Dockerfile
+│   ├── monitoring/                # Evidently drift reports
+│   └── orchestration/dags/        # Airflow DAGs
 ├── notebooks/
 │   ├── 01_nab_exploration.ipynb
 │   ├── 02_feature_engineering.ipynb
@@ -144,6 +177,8 @@ Then open http://localhost:8080 (user: admin / password: admin) to see both DAGs
 │   └── 04_evaluation_monitoring.ipynb
 └── environment.yml
 ```
+
+---
 
 ## Setup
 
@@ -183,10 +218,20 @@ python src/monitoring/drift_report.py
 
 ## AI Assistance Disclosure
 
-This project was developed with assistance from Claude (Anthropic) for code
-scaffolding, debugging, and documentation. All architectural decisions, dataset
-selection rationale, model design choices, and result interpretation are my own.
+This project was built using Claude (Anthropic) as the primary development assistant.
+Architecture decisions, Kafka producer design, Spark Structured Streaming pipeline,
+DuckDB + dbt feature store, PyTorch LSTM Autoencoder implementation, MLflow experiment
+tracking setup, FastAPI serving layer, Airflow DAG design, and Evidently AI drift
+monitoring integration were all developed through an iterative dialogue with Claude.
+I directed the goals, made decisions about dataset selection, feature engineering
+strategy, model architecture, and evaluation methodology, executed every step locally
+on Windows, and validated all outputs — but I would not claim independent authorship
+of the technical design.
 
----
-
-*Personal portfolio project — not affiliated with the University of Toronto.*
+I'm disclosing this transparently because honest AI usage is more valuable to the ML
+community than presenting AI-assisted work as fully independent. My contribution was
+in scoping the problem domain (IoT anomaly detection on NAB), navigating real
+Windows-specific infrastructure challenges (Hadoop winutils, Docker WSL2, Java setup),
+interpreting model results and threshold selection trade-offs, and learning the
+production MLOps stack through hands-on execution — not in originating the technical
+solutions from scratch.
